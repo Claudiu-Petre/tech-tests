@@ -5,22 +5,33 @@
 
 function updateInventory(arr1, arr2) {
 
-    // compare the arrays
-    for(let i = 0; i < arr2.length; i++){
-        const found = false;
-        for(let j = 0; j < arr1.length; j++){
-            if(arr2[i][1] == arr1[j][1]){
-                // update arr1 with new values
-                arr1[j][0] = arr1[j][0] + arr2[i][0]
-                found = true;
+    // 1. define a global variable for the location of the product
+    var index;
+    // 2.  built a function:
+        // a. to find the index of a specific product
+        // b. returns undefined if not found
+    const itemIndex = function(name){
+        for(let i = 0; i < this.length; i++){
+            if(this[i][1] === name){
+                return i;
             }
         }
-        // add new item to arr1 from arr2
-        if(!found){
-            arr1.push(arr2[i])
+        return undefined;
+    };
+    // 3. iterate through arr2 to compare it against arr1:
+        // a. if not found in arr1 , add it;
+    for(let i = 0; i < arr2.length; i++){
+        index = itemIndex.call(arr1, arr2[i][1]);
+        if(index === undefined){
+            arr1.push(arr2[i]);
         }
-    }
-    // sort alphabetically
+        // b. if found update its value
+        else{
+            arr1[index][0] +=arr2[i][0];
+        }
+   }
+    
+    // 4. sort arr1 alphabetically
 return arr1.sort(function(a, b) {
     if (a[1] > b[1]) {
       return 1;
@@ -30,8 +41,9 @@ return arr1.sort(function(a, b) {
     }
     return 0;
   });
-
 }
+
+
 
 var curInv = [
     [21, "Bowling Ball"],
